@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Chapas Disponíveis</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+</head>
+<body class="bg-dark">
+<div class="container py-3 py-md-5 px-3">
+    <h1 class="mb-4 fs-2">Encontre um Chapa</h1>
+
+    <form action="{% url 'chapas:buscar' %}" method="get" class="d-flex flex-column flex-sm-row gap-2 mb-4">
+        <input type="text" name="q" class="form-control" placeholder="Buscar por cidade, estado ou nome...">
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    </form>
+
+    <h4 class="mb-3">Últimos cadastrados</h4>
+    <div class="row g-3">
+        {% for chapa in chapas %}
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card bg-secondary-subtle text-body h-100">
+                <div class="card-body">
+                    <h5 class="card-title d-flex align-items-center flex-wrap gap-1">
+                        <i class="bi bi-person-circle"></i>
+                        {{ chapa.nome }}
+                        {% if chapa.verificado %}
+                        <svg class="verified-badge" width="16" height="16" viewBox="0 0 24 24" fill="none" title="Verificado" aria-label="Verificado">
+                            <circle cx="12" cy="12" r="12" fill="#1d9bf0"/>
+                            <path d="M9.5 12.8l1.8 1.8 4-4.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+                        </svg>
+                        {% endif %}
+                    </h5>
+                    <p class="card-text mb-2">{{ chapa.cidade }} - {{ chapa.estado }}</p>
+                    <a href="{% url 'chapas:registrar_contato' chapa.id %}" class="btn btn-success w-100" target="_blank">
+                        <i class="bi bi-whatsapp me-1"></i>WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <p>Nenhum chapa cadastrado ainda.</p>
+        {% endfor %}
+    </div>
+
+    <div class="mt-5 pt-3 border-top border-secondary text-center">
+        <!-- Espaço de propaganda: troque o href pelo link do anunciante -->
+        <!-- e o src pela imagem do banner (tamanho recomendado: 728x90px) -->
+        <a href="https://exemplo-do-anunciante.com" target="_blank" rel="noopener sponsored">
+            <img src="https://via.placeholder.com/728x90.png?text=Seu+Banner+Aqui" alt="Propaganda" class="img-fluid rounded">
+        </a>
+    </div>
+</div>
+</body>
+</html>
