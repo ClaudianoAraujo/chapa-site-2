@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'axes',
     'chapas',
 ]
 
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'axes.middleware.AxesMiddleware',
 ]
 
 ROOT_URLCONF = 'chapa_site.urls'
@@ -102,6 +104,16 @@ STORAGES = {
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# --- django-axes: bloqueia tentativas de login repetidas (força bruta) ---
+AUTHENTICATION_BACKENDS = [
+    'axes.backends.AxesStandaloneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+AXES_FAILURE_LIMIT = 5          # bloqueia depois de 5 tentativas erradas
+AXES_COOLOFF_TIME = 1           # libera de novo depois de 1 hora
+AXES_LOCKOUT_PARAMETERS = ['ip_address', 'username']  # bloqueia por IP + usuário juntos
+AXES_RESET_COOL_OFF_ON_FAILURE_DURING_LOCKOUT = False
 
 # --- Segurança extra quando em produção (DEBUG=False) -------------------
 if not DEBUG:
